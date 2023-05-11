@@ -1,10 +1,7 @@
 
-ITEM.name = "Handheld Radio"
+ITEM.name = "Podręczne radio"
 ITEM.model = Model("models/deadbodies/dead_male_civilian_radio.mdl")
-ITEM.description = "A shiny handheld radio with a frequency tuner.\nIt is currently turned %s%s."
-ITEM.cost = 50
-ITEM.classes = {CLASS_EMP, CLASS_EOW}
-ITEM.flag = "v"
+ITEM.description = "Małe radio z możliwością zmiany częstotliwości.\nObecna częstotliwość to %s%s."
 
 -- Inventory drawing
 if (CLIENT) then

@@ -13,10 +13,9 @@ function FACTION:GetDefaultName(client)
 end
 
 function FACTION:OnTransferred(character)
-	inventory = character:GetInventory()
-
+	local client = character:GetPlayer()
 	character:SetName(self:GetDefaultName() .. character:GetName())
-	inventory:Add("cerberp_uniform", 1)
+	client:Respawn()
 
 end
 

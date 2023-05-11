@@ -23,6 +23,16 @@ LANGUAGE = {
 	radioAlreadyOn = "Masz już włączone radio!",
 	economy = "Ekonomia",
 
+	-- item usage messages
+
+	applyItem = "Aplikuj",
+	applyItemSelf = "Aplikuj sobie",
+	applyingItem = "Aplikowanie...",
+	applyingItemSelf = "Aplikowanie sobie...",
+	splitItem = "Podziel",
+	targetTooFar = "Cel jest zbyt daleko!",
+	targetInvalid = "Niewłaściwy cel",
+
 	-- combine display messages
 	cViewData = "Downloading citizen profile data...",
 	cViewDataExpired = "ERROR! Failed to upload revised citizen profile data...",

@@ -1,7 +1,7 @@
 
-ITEM.name = "Bandage"
+ITEM.name = "Bandaż"
 ITEM.model = Model("models/illusion/eftcontainers/bandage.mdl")
-ITEM.description = "A small roll of hand-made gauze."
+ITEM.description = "Mała rolka z materiału."
 ITEM.category = "Medical"
 ITEM.maxStacks = 5
 
@@ -15,12 +15,60 @@ if CLIENT then
 end
 
 ITEM.functions.Apply = {
+	name = "applyItem",
 	sound = "items/medshot4.wav",
 	OnRun = function(itemTable)
 		local client = itemTable.player
 		local stacks = itemTable:GetData('stacks', 1)
+		local target = client:GetEyeTrace().entity
+		local defaultSpeeds = {
+			walk = client:GetWalkSpeed(),
+			run = client:GetRunSpeed()
+		}
 
-		client:SetHealth(math.min(client:Health() + 20, 100))
+		if IsValid(target) and target.IsPlayer() then
+			client:DoStaredAction(target, function()
+				client:SetAction("applyingItem", 3)
+				client:SetRunSpeed(defaultSpeeds.walk)
+				target:SetHealth(math.min(target:Health() + 20, 100))
+
+				if (stacks != 1) then
+					itemTable:SetData('stacks', stacks - 1, client)
+					return false 
+				end
+
+				client:SetRunSpeed(defaultSpeeds.run)
+
+			end, 3, function()
+				client:NotifyLocalized("targetTooFar")
+				return false 
+			end, 100)			
+		else
+			client:NotifyLocalized("targetInvalid")
+			return false
+		end
+
+		
+	end
+}
+
+ITEM.functions.ApplySelf = {
+	name = "applyItemSelf",
+	sound = "items/medshot4.wav",
+	OnRun = function(itemTable)
+		local client = itemTable.player
+		local stacks = itemTable:GetData('stacks', 1)
+		local defaultSpeeds = {
+			walk = client:GetWalkSpeed(),
+			run = client:GetRunSpeed()
+		}
+		client:SetRunSpeed(defaultSpeeds.walk)
+
+		client:SetAction("applyingItem", 3, function()
+			client:SetHealth(math.min(client:Health() + 20, 100))
+			client:SetRunSpeed(defaultSpeeds.run)
+		end)
+
 		if (stacks != 1) then
 			itemTable:SetData('stacks', stacks - 1, client)
 			return false 
@@ -49,7 +97,7 @@ ITEM.functions.combine = {
 }
 
 ITEM.functions.split = {
-	name = "Split",
+	name = "splitItem",
 	icon = "icon16/arrow_divide.png",
 	OnRun = function(item)
 		local client = item.player
