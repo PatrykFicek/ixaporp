@@ -1,0 +1,8 @@
+"apo"
+{
+	"base"		"helix"
+	"title"		"Apo RP"
+	"author"	"Herald"
+	"category"	"rp"
+	"menusystem" "1"
+}
