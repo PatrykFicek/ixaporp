@@ -1,21 +1,13 @@
 
-ITEM.name = "Bandaż wojskowy"
-ITEM.model = Model("models/illusion/eftcontainers/armybandage.mdl")
-ITEM.description = "Bandaż z metodą szybkiej aplikacji. Pomaga w nagłych wypadkach"
+ITEM.name = "Bandaż"
+ITEM.model = Model("models/illusion/eftcontainers/bandage.mdl")
+ITEM.description = "Mała rolka z materiału."
 ITEM.category = "Medical"
 ITEM.maxStacks = 5
-
-ITEM.functions.Apply = {
-	sound = "items/medshot4.wav",
-	OnRun = function(itemTable)
-		local client = itemTable.player
-
-		client:SetHealth(math.min(client:Health() + 20, 100))
-	end
-}
-
-ITEM.category = "Medical"
-ITEM.maxStacks = 5
+ITEM.width = 1
+ITEM.height = 1
+ITEM.healAmount = 10
+ITEM.applyTime = 3
 
 if CLIENT then
 	function ITEM:PaintOver(item, w, h)
@@ -25,68 +17,6 @@ if CLIENT then
 		)
 	end
 end
-
-ITEM.functions.Apply = {
-	name = "applyItem",
-	sound = "items/medshot4.wav",
-	OnRun = function(itemTable)
-		local client = itemTable.player
-		local stacks = itemTable:GetData('stacks', 1)
-		local target = client:GetEyeTrace().entity
-		local defaultSpeeds = {
-			walk = client:GetWalkSpeed(),
-			run = client:GetRunSpeed()
-		}
-
-		if IsValid(target) and target.IsPlayer() then
-			client:DoStaredAction(target, function()
-				client:SetAction("applyingItem", 2)
-				client:SetRunSpeed(defaultSpeeds.walk)
-				target:SetHealth(math.min(target:Health() + 35, 100))
-
-				if (stacks != 1) then
-					itemTable:SetData('stacks', stacks - 1, client)
-					return false 
-				end
-
-				client:SetRunSpeed(defaultSpeeds.run)
-
-			end, 2, function()
-				client:NotifyLocalized("targetTooFar")
-				return false 
-			end, 100)			
-		else
-			client:NotifyLocalized("targetInvalid")
-			return false
-		end
-
-		
-	end
-}
-
-ITEM.functions.ApplySelf = {
-	name = "applyItemSelf",
-	sound = "items/medshot4.wav",
-	OnRun = function(itemTable)
-		local client = itemTable.player
-		local stacks = itemTable:GetData('stacks', 1)
-		local defaultSpeeds = {
-			walk = client:GetWalkSpeed(),
-			run = client:GetRunSpeed()
-		}
-		client:SetRunSpeed(defaultSpeeds.walk)
-
-		client:SetAction("applyingItem", 2, function()
-			client:SetHealth(math.min(client:Health() + 35, 100))
-			client:SetRunSpeed(defaultSpeeds.run)
-		end)
-
-		if (stacks != 1) then
-			itemTable:SetData('stacks', stacks - 1, client)
-			return false 
-		end
-	end
-}
 
 ITEM.functions.combine = {
 	OnRun = function(firstItem, data)

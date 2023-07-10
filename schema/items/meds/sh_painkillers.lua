@@ -3,7 +3,11 @@ ITEM.name = "Środki przeciwbólowe"
 ITEM.model = Model("models/illusion/eftcontainers/ibuprofen.mdl")
 ITEM.description = "Nieoznaczona butelka z tabletkami."
 ITEM.category = "Medical"
-ITEM.maxStacks = 5
+ITEM.maxStacks = 4
+ITEM.width = 1
+ITEM.height = 2
+ITEM.healAmount = 5
+ITEM.applyTime = 1
 
 if CLIENT then
 	function ITEM:PaintOver(item, w, h)
@@ -13,68 +17,6 @@ if CLIENT then
 		)
 	end
 end
-
-ITEM.functions.Apply = {
-	name = "applyItem",
-	sound = "items/medshot4.wav",
-	OnRun = function(itemTable)
-		local client = itemTable.player
-		local stacks = itemTable:GetData('stacks', 1)
-		local target = client:GetEyeTrace().entity
-		local defaultSpeeds = {
-			walk = client:GetWalkSpeed(),
-			run = client:GetRunSpeed()
-		}
-
-		if IsValid(target) and target.IsPlayer() then
-			client:DoStaredAction(target, function()
-				client:SetAction("applyingItem", 1)
-				client:SetRunSpeed(defaultSpeeds.walk)
-				target:SetHealth(math.min(target:Health() + 10, 100))
-
-				if (stacks != 1) then
-					itemTable:SetData('stacks', stacks - 1, client)
-					return false 
-				end
-
-				client:SetRunSpeed(defaultSpeeds.run)
-
-			end, 1, function()
-				client:NotifyLocalized("targetTooFar")
-				return false 
-			end, 100)			
-		else
-			client:NotifyLocalized("targetInvalid")
-			return false
-		end
-
-		
-	end
-}
-
-ITEM.functions.ApplySelf = {
-	name = "applyItemSelf",
-	sound = "items/medshot4.wav",
-	OnRun = function(itemTable)
-		local client = itemTable.player
-		local stacks = itemTable:GetData('stacks', 1)
-		local defaultSpeeds = {
-			walk = client:GetWalkSpeed(),
-			run = client:GetRunSpeed()
-		}
-		client:SetRunSpeed(defaultSpeeds.walk)
-
-		client:SetAction("applyingItem", 1, function()
-			client:SetHealth(math.min(client:Health() + 10, 100))
-			client:SetRunSpeed(defaultSpeeds.run)
-		end)
-
-		if (stacks != 1) then
-			itemTable:SetData('stacks', stacks - 1, client)
-			return false 
-		end
-	end
-}
 
 ITEM.functions.combine = {
 	OnRun = function(firstItem, data)

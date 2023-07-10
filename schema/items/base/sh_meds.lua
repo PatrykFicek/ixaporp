@@ -1,14 +1,19 @@
-
-ITEM.name = "Apteczka bojowa"
-ITEM.model = Model("models/illusion/eftcontainers/ifak.mdl")
-ITEM.description = "Mała torebka oznaczona białym krzyżem. Wypełniona jest wszelkiego rodzaju medykamentami."
+ITEM.base = "base_meds"
+ITEM.name = "Medical items"
+ITEM.description = "Medical thingy"
+ITEM.model = Model("models/props_c17/suitcase_passenger_physics.mdl")
 ITEM.category = "Medical"
+ITEM.width = 1
+ITEM.height = 1
+ITEM.healAmount = 10
+ITEM.applyTime = 3
 
 ITEM.functions.Apply = {
 	name = "applyItem",
 	sound = "items/medshot4.wav",
 	OnRun = function(itemTable)
 		local client = itemTable.player
+		local stacks = itemTable:GetData('stacks', 1)
 		local target = client:GetEyeTrace().entity
 		local defaultSpeeds = {
 			walk = client:GetWalkSpeed(),
@@ -17,12 +22,18 @@ ITEM.functions.Apply = {
 
 		if IsValid(target) and target.IsPlayer() then
 			client:DoStaredAction(target, function()
-				client:SetAction("applyingItem", 5)
+				client:SetAction("@applyingItem", itemTable.applyTime)
 				client:SetRunSpeed(defaultSpeeds.walk)
-				target:SetHealth(math.min(target:Health() + 50, 100))
+				target:SetHealth(math.min(target:Health() + itemTable.healAmount, 100))
+
+				if (stacks != 1) then
+					itemTable:SetData('stacks', stacks - 1, client)
+					return false 
+				end
+
 				client:SetRunSpeed(defaultSpeeds.run)
 
-			end, 5, function()
+			end, 3, function()
 				client:NotifyLocalized("targetTooFar")
 				return false 
 			end, 100)			
@@ -40,15 +51,21 @@ ITEM.functions.ApplySelf = {
 	sound = "items/medshot4.wav",
 	OnRun = function(itemTable)
 		local client = itemTable.player
+		local stacks = itemTable:GetData('stacks', 1)
 		local defaultSpeeds = {
 			walk = client:GetWalkSpeed(),
 			run = client:GetRunSpeed()
 		}
 		client:SetRunSpeed(defaultSpeeds.walk)
 
-		client:SetAction("applyingItem", 5, function()
-			client:SetHealth(math.min(client:Health() + 50, 100))
+		client:SetAction("@applyingItem", itemTable.applyTime, function()
+			client:SetHealth(math.min(client:Health() + itemTable.healAmount, 100))
 			client:SetRunSpeed(defaultSpeeds.run)
 		end)
+
+		if (stacks != 1) then
+			itemTable:SetData('stacks', stacks - 1, client)
+			return false 
+		end
 	end
 }

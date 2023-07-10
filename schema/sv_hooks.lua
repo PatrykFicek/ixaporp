@@ -172,7 +172,7 @@ function Schema:PlayerStaminaGained(client)
 	client:AddCombineDisplayMessage("@cStaminaGained", Color(0, 255, 0, 255))
 end
 
-function Schema:GetPlayerPainSound(client)
+--[[function Schema:GetPlayerPainSound(client)
 	if (client:IsCombine()) then
 		local sound = "NPC_MetroPolice.Pain"
 
@@ -184,9 +184,9 @@ function Schema:GetPlayerPainSound(client)
 
 		return sound
 	end
-end
+end]]
 
-function Schema:GetPlayerDeathSound(client)
+--[[function Schema:GetPlayerDeathSound(client)
 	if (client:IsCombine()) then
 		local sound = "NPC_MetroPolice.Die"
 
@@ -204,7 +204,7 @@ function Schema:GetPlayerDeathSound(client)
 
 		return sound
 	end
-end
+end]]
 
 function Schema:OnNPCKilled(npc, attacker, inflictor)
 	if (IsValid(npc.ixPlayer)) then
