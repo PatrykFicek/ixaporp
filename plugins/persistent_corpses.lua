@@ -217,7 +217,7 @@ if (SERVER) then
 		if (entity:GetClass() == "prop_ragdoll" and entity.ixInventory and !ix.storage.InUse(entity.ixInventory)) then
 			ix.storage.Open(client, entity.ixInventory, {
 				entity = entity,
-				name = "Ciało " .. character:GetName(),
+				name = "Ciało", -- add localization
 				searchText = "@searchingCorpse",
 				searchTime = ix.config.Get("corpseSearchTime", 1)
 			})

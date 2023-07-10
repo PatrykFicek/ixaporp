@@ -4,22 +4,18 @@ AddCSLuaFile()
 
 ENT.Base             = "base_gmodentity"
 ENT.Type             = "anim"
-ENT.PrintName        = "Loot Dumpster"
-ENT.Author            = "Riggs Mackay"
-ENT.Purpose            = "Allows you to take loot from it."
-ENT.Instructions    = "Press E"
+ENT.PrintName        = "Loot cupboard"
+ENT.Purpose          = "Allows you to take loot from it."
+ENT.Instructions     = "Press E"
 ENT.Category         = "Herald - PostApo"
 
 ENT.AutomaticFrameAdvance = true
 ENT.Spawnable = true
 ENT.AdminOnly = true
 
-local invWidth = 4
-local invHeight = 7
-
 if ( SERVER ) then
     function ENT:Initialize()
-        self:SetModel("models/props_junk/TrashDumpster01a.mdl")
+        self:SetModel("models/props_c17/FurnitureDrawer001a.mdl")
         self:PhysicsInit(SOLID_VPHYSICS) 
         self:SetSolid(SOLID_VPHYSICS)
         self:SetUseType(SIMPLE_USE)
@@ -34,10 +30,30 @@ if ( SERVER ) then
     function ENT:SpawnFunction(ply, trace)
         local angles = ply:GetAngles()
 
-        local entity = ents.Create("ix_loot_dumpster")
-        entity.invWidth = 7
-        entity.invHeight = 8
-        entity.lootAmount = 12
+        local entity = ents.Create("ix_loot_cupboard")
+
+        entity.invWidth = 6
+        entity.invHeight = 4
+        entity.lootAmount = 5
+
+        entity.randomLoot = {
+            
+        }
+
+        entity.randomLoot.common = {
+            "waterfilter",
+            "waterbottle",
+            "toiletpaper",
+            "sugar",
+            "paper"
+        }
+
+        entity.randomLoot.rare = {
+            "thermometer",
+            "toolset",
+            "lightbulb"
+        }
+
         entity:SetPos(trace.HitPos)
         entity:SetAngles(Angle(0, (entity:GetPos() - ply:GetPos()):Angle().y - 180, 0))
         entity:Spawn()

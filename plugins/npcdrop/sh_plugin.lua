@@ -21,12 +21,7 @@ PLUGIN.config = {
         rarity = 40,
         randomItems = true,
         items = {
-            "cloth",
-            "cloth",
-            "cloth",
-            "glue",
-            "glue",
-            "gunpowder",
+            "bandage",
         },
     },
     ["npc_manhack"] = {

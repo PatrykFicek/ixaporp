@@ -8,7 +8,7 @@ ENT.PrintName        = "Loot Crate"
 ENT.Author            = "Riggs Mackay"
 ENT.Purpose            = "Allows you to take loot from it."
 ENT.Instructions    = "Press E"
-ENT.Category         = "IX:HL2RP"
+ENT.Category         = "Herald - PostApo"
 
 ENT.AutomaticFrameAdvance = true
 ENT.Spawnable = true
@@ -32,6 +32,9 @@ if ( SERVER ) then
         local angles = ply:GetAngles()
 
         local entity = ents.Create("ix_loot_crate")
+        entity.invWidth = 5
+        entity.invHeight = 5
+        entity.lootAmount = 3
         entity:SetPos(trace.HitPos)
         entity:SetAngles(Angle(0, (entity:GetPos() - ply:GetPos()):Angle().y - 180, 0))
         entity:Spawn()

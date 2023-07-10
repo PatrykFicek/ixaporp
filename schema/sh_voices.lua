@@ -396,11 +396,3 @@ Schema.voices.Add("Dispatch", "STATUS EVASION", "Attention, protection-team, sta
 Schema.voices.Add("Dispatch", "UNIDENTIFIED", "Attention, please: Unidentified person of interest, confirm your civil status with local protection-team immediately.", "npc/overwatch/cityvoice/f_confirmcivilstatus_1_spkr.wav", true)
 Schema.voices.Add("Dispatch", "UNREST PROCEDURE", "Attention, community: Unrest procedure code is now in effect. INNOCULATE, SHIELD, PACIFY. Code: PRESSURE, SWORD, STERILIZE.", "npc/overwatch/cityvoice/f_unrestprocedure1_spkr.wav", true)
 Schema.voices.Add("Dispatch", "UNREST STRUCTURE", "Alert, community ground-protection units, local unrest structure detected. ASSEMBLE, ADMINISTER, PACIFY.", "npc/overwatch/cityvoice/f_localunrest_spkr.wav", true)
-
-Schema.voices.AddClass("Combine", function(client)
-	return client:IsCombine()
-end)
-
-Schema.voices.AddClass("Dispatch", function(client)
-	return client:IsDispatch()
-end)

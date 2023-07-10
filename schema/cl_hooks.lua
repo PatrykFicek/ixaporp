@@ -20,7 +20,7 @@ end
 
 local COMMAND_PREFIX = "/"
 
-function Schema:ChatTextChanged(text)
+--[[function Schema:ChatTextChanged(text)
 	if (LocalPlayer():IsCombine()) then
 		local key = nil
 
@@ -38,11 +38,11 @@ function Schema:ChatTextChanged(text)
 			netstream.Start("PlayerChatTextChanged", key)
 		end
 	end
-end
+end]]
 
-function Schema:FinishChat()
+--[[function Schema:FinishChat()
 	netstream.Start("PlayerFinishChat")
-end
+end]]
 
 function Schema:CanPlayerJoinClass(client, class, info)
 	return false
@@ -94,15 +94,6 @@ function Schema:RenderScreenspaceEffects()
 
 	DrawColorModify(colorModify)
 
-	if (LocalPlayer():IsCombine()) then
-		render.UpdateScreenEffectTexture()
-
-		combineOverlay:SetFloat("$alpha", 0.5)
-		combineOverlay:SetInt("$ignorez", 1)
-
-		render.SetMaterial(combineOverlay)
-		render.DrawScreenQuad()
-	end
 end
 
 function Schema:PreDrawOpaqueRenderables()

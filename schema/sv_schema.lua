@@ -1,7 +1,7 @@
 
 Schema.CombineObjectives = Schema.CombineObjectives or {}
 
-function Schema:AddCombineDisplayMessage(text, color, exclude, ...)
+--[[function Schema:AddCombineDisplayMessage(text, color, exclude, ...)
 	color = color or color_white
 
 	local arguments = {...}
@@ -20,7 +20,7 @@ function Schema:AddCombineDisplayMessage(text, color, exclude, ...)
 	end
 
 	netstream.Start(receivers, "CombineDisplayMessage", text, color, arguments)
-end
+end]]
 
 -- data saving
 function Schema:SaveRationDispensers()

@@ -79,7 +79,9 @@ do
 	end
 
 	function CLASS:OnChatAdd(speaker, text)
-		text = speaker:IsCombine() and string.format("<:: %s ::>", text) or text
+		-- speaker:IsCombine() and string.format("<:: %s ::>", text) or 
+		
+		text = text
 		chat.AddText(self.color, string.format(self.format, speaker:Name(), text))
 	end
 

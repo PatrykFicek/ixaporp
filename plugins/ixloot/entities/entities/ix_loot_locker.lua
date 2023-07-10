@@ -4,8 +4,7 @@ AddCSLuaFile()
 
 ENT.Base             = "base_gmodentity"
 ENT.Type             = "anim"
-ENT.PrintName        = "Loot Dumpster"
-ENT.Author            = "Riggs Mackay"
+ENT.PrintName        = "Loot Locker"
 ENT.Purpose            = "Allows you to take loot from it."
 ENT.Instructions    = "Press E"
 ENT.Category         = "Herald - PostApo"
@@ -14,12 +13,9 @@ ENT.AutomaticFrameAdvance = true
 ENT.Spawnable = true
 ENT.AdminOnly = true
 
-local invWidth = 4
-local invHeight = 7
-
 if ( SERVER ) then
     function ENT:Initialize()
-        self:SetModel("models/props_junk/TrashDumpster01a.mdl")
+        self:SetModel("models/props_c17/Lockers001a.mdl")
         self:PhysicsInit(SOLID_VPHYSICS) 
         self:SetSolid(SOLID_VPHYSICS)
         self:SetUseType(SIMPLE_USE)
@@ -34,10 +30,24 @@ if ( SERVER ) then
     function ENT:SpawnFunction(ply, trace)
         local angles = ply:GetAngles()
 
-        local entity = ents.Create("ix_loot_dumpster")
-        entity.invWidth = 7
+        local entity = ents.Create("ix_loot_locker")
+
+        entity.invWidth = 4
         entity.invHeight = 8
-        entity.lootAmount = 12
+        entity.lootAmount = 7
+
+        entity.randomLoot = {
+            
+        }
+
+        entity.randomLoot.common = {
+            
+        }
+
+        entity.randomLoot.rare = {
+
+        }
+
         entity:SetPos(trace.HitPos)
         entity:SetAngles(Angle(0, (entity:GetPos() - ply:GetPos()):Angle().y - 180, 0))
         entity:Spawn()

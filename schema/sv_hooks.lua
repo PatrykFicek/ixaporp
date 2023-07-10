@@ -16,20 +16,10 @@ function Schema:SaveData()
 end
 
 function Schema:PlayerSwitchFlashlight(client, enabled) -- Dodać item latarka i zależność od tego
-	if (client:IsCombine()) then
-		return true
-	end
+	return false
 end
 
 function Schema:PlayerUse(client, entity)
-	if (IsValid(client.ixScanner)) then
-		return false
-	end
-
-	if (client:IsCombine() and entity:IsDoor() and IsValid(entity.ixLock) and client:KeyDown(IN_SPEED)) then
-		entity.ixLock:Toggle(client)
-		return false
-	end
 
 	if (!client:IsRestricted() and entity:IsPlayer() and entity:IsRestricted() and !entity:GetNetVar("untying")) then
 		entity:SetAction("@beingUntied", 5)
@@ -65,40 +55,13 @@ function Schema:PlayerLoadout(client)
 	client:SetNetVar("restricted")
 end
 
-function Schema:PostPlayerLoadout(client)
-	if (client:IsCombine()) then
-		if (client:Team() == FACTION_OTA) then
-			client:SetMaxHealth(150)
-			client:SetHealth(150)
-			client:SetArmor(150)
-		elseif (client:IsScanner()) then
-			if (client.ixScanner:GetClass() == "npc_clawscanner") then
-				client:SetHealth(200)
-				client:SetMaxHealth(200)
-			end
-
-			client.ixScanner:SetHealth(client:Health())
-			client.ixScanner:SetMaxHealth(client:GetMaxHealth())
-			client:StripWeapons()
-		else
-			client:SetArmor(self:IsRank(client:Name(), "RCT") and 50 or 100)
-		end
-
-		local factionTable = ix.faction.Get(client:Team())
-
-		if (factionTable.OnNameChanged) then
-			factionTable:OnNameChanged(client, "", client:GetCharacter():GetName())
-		end
-	end
-end
-
 function Schema:PrePlayerLoadedCharacter(client, character, oldCharacter)
 	if (IsValid(client.ixScanner)) then
 		client.ixScanner:Remove()
 	end
 end
 
-function Schema:PlayerLoadedCharacter(client, character, oldCharacter)
+--[[function Schema:PlayerLoadedCharacter(client, character, oldCharacter)
 	local faction = character:GetFaction()
 
 	if (faction == FACTION_CITIZEN) then
@@ -106,7 +69,7 @@ function Schema:PlayerLoadedCharacter(client, character, oldCharacter)
 	elseif (client:IsCombine()) then
 		client:AddCombineDisplayMessage("@cCombineLoaded")
 	end
-end
+end]]
 
 function Schema:CharacterVarChanged(character, key, oldValue, value)
 	local client = character:GetPlayer()
@@ -132,7 +95,7 @@ function Schema:PlayerFootstep(client, position, foot, soundName, volume)
 end
 
 function Schema:PlayerSpawn(client)
-	client:SetCanZoom(client:IsCombine())
+	client:SetCanZoom(false)
 end
 
 function Schema:PlayerDeath(client, inflicter, attacker)
@@ -179,7 +142,7 @@ function Schema:EntityTakeDamage(entity, dmgInfo)
 	end
 end
 
-function Schema:PlayerHurt(client, attacker, health, damage)
+--[[function Schema:PlayerHurt(client, attacker, health, damage)
 	if (health <= 0) then
 		return
 	end
@@ -199,7 +162,7 @@ function Schema:PlayerHurt(client, attacker, health, damage)
 
 		client.ixTraumaCooldown = CurTime() + 15
 	end
-end
+end]]
 
 function Schema:PlayerStaminaLost(client)
 	client:AddCombineDisplayMessage("@cStaminaLost", Color(255, 255, 0, 255))
@@ -249,7 +212,7 @@ function Schema:OnNPCKilled(npc, attacker, inflictor)
 	end
 end
 
-function Schema:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
+--[[function Schema:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
 	if (chatType == "ic" or chatType == "w" or chatType == "y" or chatType == "dispatch") then
 		local class = self.voices.GetClass(speaker)
 
@@ -292,7 +255,7 @@ function Schema:PlayerMessageSend(speaker, chatType, text, anonymous, receivers,
 			return string.format("<:: %s ::>", text)
 		end
 	end
-end
+end]]
 
 function Schema:CanPlayerJoinClass(client, class, info)
 	if (client:IsRestricted()) then
@@ -359,12 +322,12 @@ netstream.Hook("PlayerChatTextChanged", function(client, key)
 	end
 end)
 
-netstream.Hook("PlayerFinishChat", function(client)
+--[[netstream.Hook("PlayerFinishChat", function(client)
 	if (client:IsCombine() and client.bTypingBeep) then
 		client:EmitSound("NPC_MetroPolice.Radio.Off")
 		client.bTypingBeep = nil
 	end
-end)
+end)]]
 
 netstream.Hook("ViewDataUpdate", function(client, target, text)
 	if (IsValid(target) and hook.Run("CanPlayerEditData", client, target) and client:GetCharacter() and target:GetCharacter()) then
